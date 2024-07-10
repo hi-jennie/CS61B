@@ -34,7 +34,7 @@ public class ListExercises {
         List<Integer> common = new ArrayList<>();
         for (Integer i : L1) {
             for (Integer integer : L2) {
-                if (i == integer && !common.contains(integer)) {
+                if (i.equals(integer) && !common.contains(integer)) {
                     common.add(integer);
                 }
             }
