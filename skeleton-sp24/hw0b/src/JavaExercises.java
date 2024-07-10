@@ -6,7 +6,9 @@ public class JavaExercises {
     /** Returns an array [1, 2, 3, 4, 5, 6] */
     public static int[] makeDice() {
         // TODO: Fill in this function.
-        return null;
+        int[] arr = {1,2,3,4,5,6};
+        arr.toString();
+        return arr;
     }
 
     /** Returns the order depending on the customer.
@@ -15,14 +17,35 @@ public class JavaExercises {
      *  In any other case, return an empty String[] of size 3. */
     public static String[] takeOrder(String customer) {
         // TODO: Fill in this function.
-        return null;
+        switch (customer){
+            case "Ergun":{
+                String[] food = {"beyti", "pizza", "hamburger", "tea"};
+                return food;
+            }
+            case "Erik":{
+                String[] food1 = {"sushi", "pasta", "avocado", "coffee"};
+                return food1;
+            }
+            default:return new String[3];
+        }
+
     }
 
     /** Returns the positive difference between the maximum element and minimum element of the given array.
      *  Assumes array is nonempty. */
     public static int findMinMax(int[] array) {
-        // TODO: Fill in this function.
-        return 0;
+        int maximum = array[0];
+        int minimum = array[0];
+        for (int i = 0; i < array.length; i++) {
+            if(array[i]>maximum){
+                maximum = array[i];
+            }
+            if(array[i]<minimum){
+                minimum = array[i];
+            }
+        }
+        int result = maximum-minimum;
+        return result;
     }
 
     /**
@@ -38,8 +61,18 @@ public class JavaExercises {
     }
 
     private static List<Integer> hailstoneHelper(int x, List<Integer> list) {
-        // TODO: Fill in this function.
-        return null;
+        if(x == 1){
+            list.add(x);
+            return list;
+        }
+        if(x%2 == 0){
+            list.add(x);
+            hailstoneHelper(x/2,list);
+        }else{
+            list.add(x);
+            hailstoneHelper(3*x+1,list);
+        }
+        return list;
     }
 
 }
