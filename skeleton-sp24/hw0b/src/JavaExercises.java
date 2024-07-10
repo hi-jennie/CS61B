@@ -61,15 +61,13 @@ public class JavaExercises {
     }
 
     private static List<Integer> hailstoneHelper(int x, List<Integer> list) {
+        list.add(x);
         if(x == 1){
-            list.add(x);
             return list;
         }
         if(x%2 == 0){
-            list.add(x);
             hailstoneHelper(x/2,list);
         }else{
-            list.add(x);
             hailstoneHelper(3*x+1,list);
         }
         return list;
