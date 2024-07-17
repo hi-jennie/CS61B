@@ -3,6 +3,7 @@ package adventure;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdRandom;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,7 @@ public class BeeCountingStage implements AdventureStage {
 
     private final In in;
     private final Map<String, AdventureStage> responses;
-    private List<String> input;
+    private ArrayList<String> input;
 
     public BeeCountingStage(In in) {
         this.in = in;
@@ -25,6 +26,7 @@ public class BeeCountingStage implements AdventureStage {
      */
     @Override
     public void playStage() {
+        input = new ArrayList<>();
         while (true) {
             String msg = """
                     In Soda 326, you can find the computers known as "The Hive". It is a little-known fact that
