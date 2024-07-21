@@ -146,6 +146,23 @@ public class Model {
      */
     public boolean atLeastOneMoveExists() {
         // TODO: Fill in this function.
+        if (this.emptySpaceExists()) {
+            return true;
+        }
+        for (int i = 0; i < this.board.size(); i++) {
+            for (int j = 0; j < this.board.size(); j++) {
+                // 当j在最上面一行时，不向上比较，只向右比较，否则索引越界，
+                if (j < this.board.size() - 1 && this.board.tile(i, j).value() == this.board.tile(i, j + 1).value()) {
+                    return true;
+                }
+                // // 当i在最上面一行时，不向右比较，只向上比较，否则索引越界，
+                if (i < this.board.size() - 1 && this.board.tile(i, j).value() == this.board.tile(i + 1, j).value()) {
+                    return true;
+                }
+
+            }
+
+        }
         return false;
     }
 
