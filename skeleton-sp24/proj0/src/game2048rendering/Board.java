@@ -30,13 +30,16 @@ public class Board {
         _viewPerspective = Side.NORTH;
         for (int x = 0; x < size; x += 1) {
             for (int y = 0; y < size; y += 1) {
+                // get the raw value from the first column,from the bottom to top
                 int value = rawValues[size - 1 - y][x];
                 Tile tile;
                 if (value == 0) {
                     tile = null;
                 } else {
+                    // we create a tile first
                     tile = Tile.create(value, x, y);
                 }
+                // then add the tile to board;
                 _values[x][y] = tile;
             }
         }
