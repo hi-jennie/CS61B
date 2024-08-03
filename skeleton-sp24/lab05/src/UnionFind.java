@@ -42,13 +42,15 @@ public class UnionFind {
         }
         int parent = parents[v];
         if (parent < 0) {
+
             return v;
         } else {
             int root = find(parent);
-            while (parent(v) >= 0) {
-                parents[v] = root;
-                v = parent(v);
-            }
+//            while (parent(v) >= 0) {
+//                parents[v] = root;
+//                v = parent(v);
+//            }
+            parents[v] = root;
             return root;
         }
     }
