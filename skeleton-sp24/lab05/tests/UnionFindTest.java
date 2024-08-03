@@ -1,7 +1,6 @@
 import org.junit.Test;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.fail;
 
 public class UnionFindTest {
@@ -37,7 +36,6 @@ public class UnionFindTest {
             uf.union(1, 10);
             fail("Cannot union with an out of range vertex!");
         } catch (IllegalArgumentException e) {
-            return;
         }
     }
 
@@ -85,7 +83,31 @@ public class UnionFindTest {
      * Specifically, you may want to write a test for path compression and to check for the correctness
      * of all methods in your implementation.
      */
+    @Test
+    public void unionFindTest() {
+        UnionFind uf = new UnionFind(10);
+        uf.union(0, 1);
+        assertThat(uf.find(0)).isEqualTo(1);
+        uf.union(2, 3);
+        assertThat(uf.find(2)).isEqualTo(3);
+        uf.union(0, 2);
+        assertThat(uf.find(1)).isEqualTo(3);
 
+        assertThat(uf.sizeOf(1)).isEqualTo(4);
+        assertThat(uf.sizeOf(3)).isEqualTo(4);
+
+        uf.union(4, 5);
+        uf.union(4, 8);
+        uf.union(8, 9);
+        uf.union(0, 9);
+
+        uf.find(0);
+        assertThat(uf.parent(0)).isEqualTo(5);
+        assertThat(uf.parent(1)).isEqualTo(3);
+        assertThat(uf.parent(2)).isEqualTo(3);
+        uf.find(2);
+        assertThat(uf.parent(2)).isEqualTo(5);
+    }
 }
 
 
