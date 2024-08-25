@@ -1,5 +1,6 @@
 import java.util.Iterator;
 import java.util.Set;
+import java.util.Stack;
 import java.util.TreeSet;
 
 public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
@@ -18,8 +19,11 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         bst.put("Jennie", 2);
         bst.put("Jennie", 3);
         bst.put("Rustin",4);
+        bst.put("Rustin",5);
+        bst.put("Rus",7);
         System.out.println(bst.get("Jennie"));
         System.out.println(bst.getEntry("Rustin").val);
+        System.out.println(bst.get("Rus"));
     }
 
     /**
@@ -42,10 +46,10 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         }
         int cmp = key.compareTo(entry.key);
         if (cmp < 0) {
-            // if we use this statement "put(entry.left, key, val);" directly ,we can't connect two the new entry with its parent.
+            // if we use this statement "put(entry.left, key, val);" directly ,we can't connect  the new entry with its parent.
             entry.left = put(entry.left, key, val);
         } else if (cmp > 0) {
-            entry.right = put(entry.left, key, val);
+            entry.right = put(entry.right, key, val); // Fixed this line
         } else {
             entry.val = val;
         }
@@ -111,7 +115,16 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
     // prints out your BSTMap in order of increasing Key.
     public void printInOrder() {
-
+        Stack<Entry> stack = new Stack<>();
+        Entry current  = root;
+        while(current != null||!stack.isEmpty()){
+            while(current !=null){
+                stack.push(current);
+                current = current.left;
+            }
+            System.out.println(current.val);
+            current = current.right;
+        }
     }
 
     /**
