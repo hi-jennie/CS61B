@@ -108,48 +108,57 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
     @Override
     public V remove(K key) {
-        Entry removedEntry = new Entry(null, null);
-        root = remove(root, key, removedEntry);
-        if (removedEntry.key != null) {
+        if (key == null) {
+            throw new IllegalArgumentException("Key cannot be null");
+        }
+        Entry removedEntry = remove(root, key);
+        if (removedEntry != null) {
             size--;
             keySet.remove(key);
             return removedEntry.val;
         }
         return null;
     }
-
-    private Entry remove(Entry entry, K key, Entry removedEntry) {
+    
+    private Entry remove(Entry entry, K key) {
         if (entry == null) {
             return null;
         }
-
         int cmp = key.compareTo(entry.key);
         if (cmp < 0) {
-            entry.left = remove(entry.left, key, removedEntry);
+            entry.left = remove(entry.left, key);
         } else if (cmp > 0) {
-            entry.right = remove(entry.right, key, removedEntry);
+            entry.right = remove(entry.right, key);
         } else {
-            removedEntry.key = entry.key;
-            removedEntry.val = entry.val;
-            if (entry.left == null)
+            if (entry.left == null) {
                 return entry.right;
-            if (entry.right == null)
+            } else if (entry.right == null) {
                 return entry.left;
-
-            Entry successor = findMin(entry.right);
-            entry.key = successor.key;
-            entry.val = successor.val;
-            entry.right = remove(entry.right, successor.key, new Entry(null, null));
+            }
+            Entry temp = entry;
+            entry = min(temp.right);
+            entry.right = removeMin(temp.right);
+            entry.left = temp.left;
         }
         return entry;
+        // 返回值为被删除元素的替代值
     }
-
-    private Entry findMin(Entry entry) {
-        while (entry.left != null)
-            entry = entry.left;
+    
+    private Entry min(Entry entry) {
+        if (entry.left == null) {
+            return entry;
+        } else {
+            return min(entry.left);
+        }
+    }
+    // 找到successor的右节点，直接用右节点取代原有的successor的位置。
+    private Entry removeMin(Entry entry) {
+        if (entry.left == null) {
+            return entry.right;
+        }
+        entry.left = removeMin(entry.left);
         return entry;
     }
-
     @Override
     public Iterator<K> iterator() {
         return null;
