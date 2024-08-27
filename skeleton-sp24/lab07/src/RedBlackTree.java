@@ -17,7 +17,9 @@ public class RedBlackTree<T extends Comparable<T>> {
      * @param node
      */
     void flipColors(RBTreeNode<T> node) {
-        
+        node.isBlack = !node.isBlack;
+        node.left.isBlack = !node.left.isBlack;
+        node.right.isBlack = !node.right.isBlack;
     }
 
     /**
@@ -30,15 +32,20 @@ public class RedBlackTree<T extends Comparable<T>> {
      */
     RBTreeNode<T> rotateRight(RBTreeNode<T> node) {
         // TODO: YOUR CODE HERE
-        RBTreeNode<T> temp = node;
-        node = node.left;
-        if (temp.left.right != null) {
-            temp.left = node.right;
-        } else {
-            temp.left = null;
-        }
-        node.right = temp;
-        return node;
+        RBTreeNode<T> leftNode = node.left;
+        boolean nodeLeftColor = leftNode.isBlack;
+        boolean nodeColor = node.isBlack;
+        // swap the color
+        leftNode.isBlack = nodeColor;
+        node.isBlack = nodeLeftColor;
+
+        // copy the original information of the node.left.right
+        RBTreeNode<T> rightOfLeftNode = leftNode.right;
+        leftNode.right = node;
+        node.left = rightOfLeftNode;
+
+        // return the new top node;
+        return leftNode;
     }
 
     /**
@@ -51,7 +58,16 @@ public class RedBlackTree<T extends Comparable<T>> {
      */
     RBTreeNode<T> rotateLeft(RBTreeNode<T> node) {
         // TODO: YOUR CODE HERE
-        return null;
+        RBTreeNode<T> rightNode = node.right;
+        Boolean nodeColor = node.isBlack;
+        Boolean rightColor = rightNode.isBlack;
+        rightNode.isBlack = nodeColor;
+        node.isBlack = rightColor;
+
+        RBTreeNode<T> leftOfNodeRight = rightNode.left;
+        rightNode.left = node;
+        node.right = leftOfNodeRight;
+        return rightNode;
     }
 
     /**
@@ -62,6 +78,8 @@ public class RedBlackTree<T extends Comparable<T>> {
      * @return
      */
     private boolean isRed(RBTreeNode<T> node) {
+        // a little tricky: we regard null as black color
+        // the only case that return true: not null and definitely red node;
         return node != null && !node.isBlack;
     }
 
@@ -86,16 +104,32 @@ public class RedBlackTree<T extends Comparable<T>> {
      */
     private RBTreeNode<T> insert(RBTreeNode<T> node, T item) {
         // TODO: Insert (return) new red leaf node.
-
+        if (node == null) {
+            return new RBTreeNode<>(false, item);
+        }
         // TODO: Handle normal binary search tree insertion.
-
-        // TODO: Rotate left operation
-
-        // TODO: Rotate right operation
-
-        // TODO: Color flip
-
-        return null; //fix this return statement
+        int cmp = item.compareTo(node.item);
+        if (cmp < 0) {
+            node.left = insert(node.left, item);
+        } else if (cmp > 0) {
+            node.right = insert(node.right, item);
+        } else {
+            return node;
+        }
+        // red right child and black left child: rotate left;
+        if (isRed(node.right) && !isRed(node.left)) {
+            node = rotateLeft(node);
+        }
+        // two consecutive left children: rotate right;
+        if (isRed(node.left) && isRed(node.left.left)) {
+            node = rotateRight(node);
+        }
+        // two children are both red : flip color;
+        if (isRed(node.left) && isRed(node.right)) {
+            flipColors(node);
+        }
+        return node;
+        //fix this return statement
     }
 
     static class RBTreeNode<T> {
