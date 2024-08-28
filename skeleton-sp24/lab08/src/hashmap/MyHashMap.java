@@ -39,6 +39,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * @param initialCapacity initial size of backing array
      * @param loadFactor      maximum load factor
      */
+    @SuppressWarnings("unchecked")
     public MyHashMap(int initialCapacity, double loadFactor) {
         buckets = new Collection[initialCapacity];
         for (int i = 0; i < initialCapacity; i++) {
@@ -60,11 +61,13 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
             throw new IllegalArgumentException("Null keys are not allowed");
         }
         int index = getIndex(key, capacity);
+
         Collection<Node> currentBucket = buckets[index];
         for (Node node : currentBucket) {
             if (node.key.equals(key)) {
                 node.value = value;
-                break;
+                // return 在方法有返回值的情况下返回返回值，没有就是中止方法。
+                return;
             }
         }
         currentBucket.add(new Node(key, value));
@@ -136,15 +139,29 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     @Override
     public V remove(K key) {
-        if (key == null || !this.containsKey(key)) {
+        // actually there is no need to check if this key exist cause when looping through the buckets,if return value is null
+        // it represents that this key doesn't exist.
+        if (key == null) {
             throw new IllegalArgumentException("key doesn't exist");
         }
-        return null;
+        int index = getIndex(key, capacity);
+        Collection<Node> bucket = buckets[index];
+        V temp = null;
+        for (Node node : bucket) {
+            if (node.key.equals(key)) {
+                temp = node.value;
+                numOfElements--;
+                keyset.remove(key);
+                bucket.remove(node);
+                break;
+            }
+        }
+        return temp;
     }
 
     @Override
     public Iterator<K> iterator() {
-        return null;
+        return keyset.iterator();
     }
 
     /**
